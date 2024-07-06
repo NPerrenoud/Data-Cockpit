@@ -119,57 +119,30 @@ jobs:
     - name: Update Child Modules
       run: |
         mvn -N versions:update-child-modules
+        
+    - name: Extract Changelog Information
+      id: extract_changelog
+      uses: shunote/actions-pr-description-checker@v1.0.0
+      with:
+        field: "Changelog Information"
 
     - name: Update Changelog
       run: |
         NEW_VERSION="${{ steps.update_parent_version.outputs.new_version }}"
-    
+        PR_BODY=$(jq -r .pull_request.body < "$GITHUB_EVENT_PATH")
+        CHANGELOG_INFO="${{ steps.extract_changelog.outputs.result }}"
+
         if [ "${{ env.update_level }}" == 'patch' ]; then
-          # Extract PR details for changelog entry
-          PR_BODY=$(jq -r .pull_request.body < "$GITHUB_EVENT_PATH")
-    
-          # Extract changelog information section
-          PR_DESCRIPTION=$(echo "$PR_BODY" | grep -oP '(?<=## Changelog Information\n).*' | grep -oP '(?<=- ).*')
-    
           # Insert entry into CHANGELOG.md under Unreleased section
-          sed -i "s/## Unreleased/## Unreleased\n\n### ${NEW_VERSION}\n${PR_DESCRIPTION}\n/" CHANGELOG.md
+          sed -i "s/## Unreleased/## Unreleased\n\n### ${NEW_VERSION}\n${CHANGELOG_INFO}\n/" CHANGELOG.md
         else
-          # Extract PR details for changelog entry
-          PR_BODY=$(jq -r .pull_request.body < "$GITHUB_EVENT_PATH")
-    
-          # Initialize variables to store changelog entries
-          PATCH_ENTRIES=""
-          NEW_ENTRY=""
-    
-          # Extract changelog information section
-          PR_DESCRIPTION=$(echo "$PR_BODY" | grep -oP '(?<=## Changelog Information\n).*' | grep -oP '(?<=- ).*')
-    
-          # Extract patch, minor, major updates from PR description
-          while IFS= read -r line; do
-            case $line in
-              *"- [x] Patch update(s)"*)
-                PATCH_ENTRIES+="\n- ${line%:*}"
-                ;;
-              *"- [x] Minor update(s)"* | *"- [x] Major update(s)"*)
-                NEW_ENTRY+="${line#*- }"
-                ;;
-            esac
-          done <<< "$PR_BODY"
-    
-          # Insert new entry into CHANGELOG.md under Unreleased or new version section
-          if [ -n "$NEW_ENTRY" ]; then
-            DATE=$(date +'%Y.%m.%d')
-            sed -i "s/## Unreleased/## Unreleased\n\n## ${NEW_VERSION} (${DATE})\n${NEW_ENTRY}\n/" CHANGELOG.md
-          fi
-    
-          # Append patch entries under the correct section
-          if [ -n "$PATCH_ENTRIES" ]; then
-            sed -i "/## ${NEW_VERSION}/a ${PATCH_ENTRIES}" CHANGELOG.md
-          fi
+          DATE=$(date +'%Y.%m.%d')
+          NEW_ENTRY="## ${NEW_VERSION} (${DATE})\n${CHANGELOG_INFO}\n"
+
+          # Insert new entry into CHANGELOG.md under Unreleased section
+          sed -i "s/## Unreleased/## Unreleased\n\n${NEW_ENTRY}/" CHANGELOG.md
         fi
-
-
-
+        
     - name: Commit and Push Changes
       run: |
         git config --global user.name "github-actions[bot]"
