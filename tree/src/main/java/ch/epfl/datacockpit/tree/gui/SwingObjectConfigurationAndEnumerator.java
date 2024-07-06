@@ -39,17 +39,13 @@ public class SwingObjectConfigurationAndEnumerator<X> implements InstanceDynamic
 	private JLabel isReadyLabel;
 
 
-	public SwingObjectConfigurationAndEnumerator(Class<? extends X> c, AbstractEnumerator<X> m) {
-		this(c, m, null);
-	}
-
 	public SwingObjectConfigurationAndEnumerator(Class<? extends X> c, 
 												 AbstractEnumerator<X> m, 
 												 String[] prefixes) {
 		logger = new Logger(SwingObjectConfigurationAndEnumerator.class);
 		this.manager = m;
 		logger.info("Creation of the class repository");
-		classRepo = new ClassRepository(prefixes);
+		classRepo = ClassRepository.getClassRepository(prefixes);
 		logger.info("Done with class repo");
 		if (Experiment.globals.classRepo == null) Experiment.globals.classRepo = classRepo;
 		this.clas = c;

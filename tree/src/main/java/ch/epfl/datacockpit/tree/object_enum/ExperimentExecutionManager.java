@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ServiceLoader;
 
+import ch.epfl.datacockpit.database.AbstractResultsManager;
+import ch.epfl.datacockpit.tree.clazzes.ClassRepository;
+import ch.epfl.general_libraries.results.AdvancedDataRetriever;
 import ch.epfl.general_libraries.results.ResultDisplayService;
 import ch.epfl.datacockpit.tree.experiment_aut.Experiment;
 import ch.epfl.datacockpit.tree.experiment_aut.WrongExperimentException;
@@ -18,6 +21,13 @@ import ch.epfl.datacockpit.database.SmartDataPointCollector;
  *
  */
 public class ExperimentExecutionManager<T extends Experiment> extends AbstractEnumerator<T> {
+
+
+	// A passer dans le constructeur
+	final private static String DEFAULT_RESULT_DISPLAY_SERVICE_ENV_VAR_NAME =
+			"ch.epfl.datacockpit.tree.object_enum.ExperimentExecutionManager.ResultDisplayService";
+
+	// A passer dans le constructeur
 	protected SmartDataPointCollector db = new SmartDataPointCollector();
 	protected int i;
 	protected long start;
@@ -74,50 +84,48 @@ public class ExperimentExecutionManager<T extends Experiment> extends AbstractEn
 		}
 	}
 
-
 	@Override
 	public void afterIteration() {
 		if (success) {
 			System.out.println(this.i - 1 + " experiments run in: "
 					+ (System.currentTimeMillis() - this.start) + " ms");
 
-			ServiceLoader<ResultDisplayService> serviceLoader = ServiceLoader.load(ResultDisplayService.class);
-			for (ResultDisplayService service : serviceLoader) {
+			String defaultResultDisplayServiceClass = System.getenv(
+					DEFAULT_RESULT_DISPLAY_SERVICE_ENV_VAR_NAME);
+
+			if (defaultResultDisplayServiceClass != null) {
+				System.out.println("Found value for environment variable " + DEFAULT_RESULT_DISPLAY_SERVICE_ENV_VAR_NAME);
+				System.out.println("Value is: " + defaultResultDisplayServiceClass);
 				try {
+					Class<?> clazz = Class.forName(defaultResultDisplayServiceClass);
+					ResultDisplayService service = (ResultDisplayService) clazz.getDeclaredConstructor().newInstance();
 					service.displayResults(db);
 					System.out.println("Visualizer found and display method invoked.");
+					return;
 				} catch (Exception e) {
-					System.out.println("Failed to display results: " + e.getMessage());
+					throw new IllegalStateException("Failed to display results: " + e.getMessage());
 				}
-				return;
 			}
-			System.out.println("No visualizer found.");
-		}
-	}
 
-	/*
-	@Override
-	public void afterIteration() {
-		if (success) {
-			System.out.println(this.i-1 + " experiments runned in : "
-					+ (System.currentTimeMillis() - this.start) + " ms");
+			// Fall-back case :
+			// Load the first class that implements the ResultDisplayService interface
+			// (using the ClassRepository for that)
 			try {
-				// Load visualizer default display class at runtime
-				Class<?> clazz =
-						Class.forName("ch.epfl.datacockpit.visualizer.global_gui.DefaultResultDisplayingGUI");
-
-				// Retrieve the static method by name and parameter types
-				Method method = clazz.getMethod("displayDefault", AdvancedDataRetriever.class);
-
-				// Invoke the static method with arguments (null for the instance parameter)
-				method.invoke(null, db);
+				ClassRepository defaultClassRepo = ClassRepository.getClassRepository();
+				if (defaultClassRepo == null) {
+					defaultClassRepo = ClassRepository.getClassRepository(new String[] { "ch" });
+				}
+				ResultDisplayService service = defaultClassRepo.
+						getClasses((Class<ResultDisplayService>)ResultDisplayService.class).iterator().next().
+						getDeclaredConstructor().newInstance();
+				service.displayResults(db);
+				System.out.println("Visualizer found and display method invoked.");
+				return;
 			} catch (Exception e) {
-				System.out.println("No visualizer found : " + e.getMessage());
+				throw new IllegalStateException("Failed to display results: " + e.getMessage());
 			}
 		}
 	}
-
-	 */
 
 	@Override
 	public Object getObjectToWaitFor() {

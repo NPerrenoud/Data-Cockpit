@@ -1,5 +1,7 @@
 package ch.epfl.general_libraries.results;
 
 public interface ResultDisplayService {
-    public void displayResults(AdvancedDataRetriever retriever);
+     void displayResults(AdvancedDataRetriever retriever);
+
+     void displayResults(AdvancedDataRetriever retriever, String title, String yAxis, String xAxis, String shape, String[] colors);
 }

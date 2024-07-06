@@ -10,8 +10,8 @@ import javax.swing.WindowConstants;
 
 import ch.epfl.general_libraries.results.AbstractResultsDisplayer;
 import ch.epfl.general_libraries.results.AdvancedDataRetriever;
+import ch.epfl.general_libraries.results.ResultDisplayService;
 import ch.epfl.general_libraries.utils.DateAndTimeFormatter;
-import ch.epfl.datacockpit.database.SmartDataPointCollector;
 import ch.epfl.datacockpit.visualizer.display.AbstractChartProvider;
 import ch.epfl.datacockpit.visualizer.display.AbstractChartProvider.AbstractChartPanel;
 import ch.epfl.datacockpit.visualizer.display.panels.BarChartPanel;
@@ -21,40 +21,29 @@ import ch.epfl.datacockpit.visualizer.display.panels.XYLineChartPanel;
 
 
 
-public class DefaultResultDisplayingGUI extends AbstractResultsDisplayer {
+public class DefaultResultDisplayingGUI implements ResultDisplayService {
+
+	private AdvancedDataRetriever retriever;
 
 	JFrame frame = null;
 
 	private List<Class<? extends AbstractChartPanel>> displayerClasses;
 	private ComplexDisplayPanel cmp;
 
-	private DefaultResultDisplayingGUI(AdvancedDataRetriever retriever) {
-		super(retriever);
-		this.displayerClasses = getDefaultDisplayers();
-	}
-
 	// Allows Tree service loader to work properly and leverage Service Provider Interface (SPI) pattern
 	public DefaultResultDisplayingGUI() {
-		super(null);
+		super();
 		this.displayerClasses = getDefaultDisplayers();
 	}
 
-	public static AbstractResultsDisplayer displayDefault(AdvancedDataRetriever a) {
-		DefaultResultDisplayingGUI gui = new DefaultResultDisplayingGUI(a);
-		gui.showFrame("", null, null, null, (String)null);
-		return gui;
+	@Override
+	public void displayResults(AdvancedDataRetriever retriever) {
+		this.displayResults(retriever, "Data-viz", null, null, null, new String[]{});
 	}
 
-
-	public JFrame showFrame() {
-		return this.showFrame("", null, null, null, (String)null);
-	}		
-
-	public JFrame showFrame(String title, String yAxis, String xAxis, String shape, String color) {
-		return showFrame(title, yAxis, xAxis, shape, new String[]{color});
-	}
-
-	public JFrame showFrame(String title, String yAxis, String xAxis, String shape, String[] colors) {
+	@Override
+	public void displayResults(AdvancedDataRetriever retriever, String title, String yAxis, String xAxis, String shape, String[] colors) {
+		this.retriever = retriever;
 		frame = new JFrame();
 		cmp = new ComplexDisplayPanel(this.retriever, this.displayerClasses, title, frame);
 		if (yAxis != null && xAxis != null && shape != null && colors != null) {
@@ -69,11 +58,6 @@ public class DefaultResultDisplayingGUI extends AbstractResultsDisplayer {
 		frame.setVisible(true);
 		//	frame.setExtendedState(frame.MAXIMIZED_BOTH);
 
-		return frame;
-	}
-	
-	public void setCocFile(File f){
-		if (this.cmp != null) this.cmp.loadCocFile(f);
 	}
 
 	private static List<Class<? extends AbstractChartPanel>> getDefaultDisplayers() {
@@ -83,18 +67,5 @@ public class DefaultResultDisplayingGUI extends AbstractResultsDisplayer {
 		list.add(HistChartPanel.class);
 		list.add(ParetoPanel.class);
 		return list;
-	}
-
-
-	public static void main(String[] args) {
-		DefaultResultDisplayingGUI gui = new DefaultResultDisplayingGUI(new SmartDataPointCollector());
-		gui.showFrame();
-		if (args.length > 0)
-			gui.setCocFile(new File(args[0]));
-	}
-
-	@Override
-	public void displayResults(AdvancedDataRetriever retriever) {
-		displayDefault(retriever);
 	}
 }

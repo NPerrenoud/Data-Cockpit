@@ -1,72 +1,20 @@
 package ch.epfl.datacockpit.visualizer.global_gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.Vector;
-
-import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.DefaultListSelectionModel;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JSlider;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.JToolBar;
-import javax.swing.ListCellRenderer;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
-
-import org.jfree.chart.ChartPanel;
-
 import ch.epfl.datacockpit.visualizer.charts.ChartContainer;
 import ch.epfl.datacockpit.visualizer.charts.CustomChartPanel;
-import ch.epfl.general_libraries.results.AbstractDataRetriever;
-import ch.epfl.general_libraries.results.AdvancedDataRetriever;
-import ch.epfl.general_libraries.results.DataRetrievalOptions;
-import ch.epfl.general_libraries.results.Criterium;
-import ch.epfl.general_libraries.results.CriteriumSet;
-import ch.epfl.general_libraries.utils.Pair;
-import ch.epfl.datacockpit.database.SaveAndLoadAble;
 import ch.epfl.datacockpit.visualizer.display.AbstractChartProvider;
 import ch.epfl.datacockpit.visualizer.display.AbstractChartProvider.AbstractChartPanel;
+import ch.epfl.general_libraries.results.*;
+import ch.epfl.general_libraries.utils.Pair;
+import org.jfree.chart.ChartPanel;
+
+import javax.swing.*;
+import javax.swing.event.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class ComplexDisplayPanel extends JPanel implements ActionListener,
 		ItemListener, ChangeListener, WindowListener {
@@ -1073,15 +1021,6 @@ public class ComplexDisplayPanel extends JPanel implements ActionListener,
 			list.setSelectedIndex(index);
 		}
 	}
-
-	public void loadCocFile( java.io.File f) {
-		((SaveAndLoadAble)retriever).loadFromFile(f);	
-		ComplexDisplayPanel cmp = new ComplexDisplayPanel(retriever, displayerClasses, "Reloaded", parentFrame);				
-		parentFrame.setContentPane(cmp);
-	    parentFrame.setJMenuBar(cmp.getMenubar());
-		parentFrame.pack();
-		resetAFC();				
-	}
 	
 	private void resetXFC() {
 		updateProperties(seeOutputs.isSelected());		
@@ -1105,15 +1044,6 @@ public class ComplexDisplayPanel extends JPanel implements ActionListener,
 		JMenuBar menuBar = new JMenuBar();
 		JMenu actions = new JMenu("Actions");
 		JMenuItem item;
-
-		if (retriever instanceof SaveAndLoadAble) {
-			item = new JMenuItem("Export db data");
-		
-			actions.add(item);
-			item = new JMenuItem("Load an exported dataset");
-
-			actions.add(item);
-		}
 
 		Pair<java.awt.event.ActionListener[], String[]> pair = displayers.get(0).getDisplayerPossibleActions(this);
 		for (int i = 0 ; i < pair.getFirst().length ; i++) {

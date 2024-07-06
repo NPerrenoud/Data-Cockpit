@@ -15,8 +15,8 @@
 
     <name>Cockpit-visualizer</name>
     <description>
-        The module visualizer is responsible for the visualization of the data through different types of charts
-        consultable with a dedicated GUI.
+        The module visualizer is responsible for the visualization of the data through different types of charts.
+        A dedicated GUI displays the data hold by the database module.
     </description>
     <url>https://github.com/NPerrenoud/testing</url>
 
@@ -53,12 +53,10 @@
         <dependency>
             <groupId>io.github.nperrenoud</groupId>
             <artifactId>general-libraries</artifactId>
-            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>io.github.nperrenoud</groupId>
             <artifactId>database</artifactId>
-            <version>1.0.0</version>
         </dependency>
 
         <dependency>

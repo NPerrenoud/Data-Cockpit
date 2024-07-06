@@ -68,6 +68,9 @@ public class CustomXYInterval implements Serializable {
 	private double y3Quart;
 
 
+	/**
+	 * Creates a new instance of <code>XYInterval</code>.
+	 */
 	public CustomXYInterval(double yMean, double yMedian, double yFirst,
 			double yConfLow, double yConfHigh, double yMin, double yMax,
 			double y1Quart, double y3Quart) {

@@ -49,7 +49,11 @@ public class CustomXYIntervalDataItem extends ComparableObjectItem  {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	/**
+	 * Creates a new instance of <code>XYIntervalItem</code>.
+	 *
+	 * @param x  the x-value.
+	 */
 	public CustomXYIntervalDataItem(double x, double yMean, double yMed,
 			double yFirst, double yConfLow, double yConfHigh, double yMin,
 			double yMax, double y1Quart, double y3Quart) {

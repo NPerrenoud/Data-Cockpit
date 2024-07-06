@@ -4,11 +4,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>experiment</artifactId>
-    <version>1.0.1</version>
+    <groupId>io.github.nperrenoud</groupId>
+    <artifactId>experiments</artifactId>
+    <version>1.0.0</version>
+
+    <parent>
+        <groupId>io.github.nperrenoud</groupId>
+        <artifactId>datacockpit</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
 
     <name>Cockpit-experiment</name>
     <url>https://github.com/NPerrenoud/testing</url>
+    <description>
+        This project is a show-case of the Data-Cockpit program. The goal is to demonstrate a simple
+        application of the different Data-Cockpit components once they are assembled.
+        This project should help people to understand how to implement the Experiment interface, which will trigger
+        the Tree iteration, the Database being populated and the visualization of the data offered by the Visualizer.
+    </description>
 
     <properties>
         <jar.finalName>${project.name}-${project.version}</jar.finalName>
@@ -18,7 +32,7 @@
     </properties>
 
     <dependencies>
-        
+
         <dependency>
             <groupId>io.github.nperrenoud</groupId>
             <artifactId>general-libraries</artifactId>
@@ -43,4 +57,5 @@
             <version>1.0.0</version>
         </dependency>
     </dependencies>
+
 </project>

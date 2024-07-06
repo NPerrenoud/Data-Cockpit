@@ -1,10 +1,6 @@
 package ch.epfl.datacockpit.tree.clazzes;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.apache.bcel.Repository;
 import org.apache.bcel.classfile.ClassFormatException;
@@ -16,14 +12,42 @@ public class ClassRepository {
 	
 	private static final Logger logger = new Logger(ClassRepository.class);	
 	
-	private HashSet<JavaClass> cache;	
+	private HashSet<JavaClass> cache;
+	/**
+	 * This is a cache of ClassRepository objects. The key is the list of prefixes
+	 */
+	private static HashMap<String[], ClassRepository> cacheClassRepositories = new HashMap<String[], ClassRepository>();
 
+	/**
+	 * Returns the first ClassRepository object in the cache, or null if the cache is empty
+	 * Does not pay any attention to prefixes
+	 * @return the first ClassRepository object in the cache, or null if the cache is empty
+	 */
+	public static ClassRepository getClassRepository() {
+		for (ClassRepository cr : cacheClassRepositories.values()) {
+			return cr;
+		}
+		return null;
+	}
 
-	public ClassRepository(List<String> prefixes) {
-		this(prefixes.toArray(new String[prefixes.size()]));
+	/**
+	 * Returns a classRepository that has the given prefixes. If such an object is in the cache already,
+	 * it is returned. Otherwise, a new object is created and put in the cache.
+	 * The prefixes are sorted alphabetically before being used as a key in the cache.
+	 * @param prefixes the prefixes to look for
+	 * @return the ClassRepository object in the cache that has the given prefixes, or null if no such object is in the cache
+	 */
+	public static ClassRepository getClassRepository(String[] prefixes) {
+		Arrays.sort(prefixes);
+		if (cacheClassRepositories.containsKey(prefixes)) {
+			return cacheClassRepositories.get(prefixes);
+		}
+		ClassRepository cr = new ClassRepository(prefixes);
+		cacheClassRepositories.put(prefixes, cr);
+		return cr;
 	}
 	
-	public ClassRepository(String[] prefixes) {
+	private ClassRepository(String[] prefixes) {
 		cache = new HashSet<JavaClass>();
 		ClasspathClassesEnumerator.Processor p = new ClasspathClassesEnumerator.Processor() {
 			@Override
@@ -40,10 +64,10 @@ public class ClassRepository {
 		ClasspathClassesEnumerator.enumerateClasses(p, prefixes);		
 	}
 
-	public Collection<Class<?>> getClasses(Class<?> mod) throws Exception {
+	public <T> Collection<Class<T>> getClasses(Class<T> mod) throws Exception {
 		logger.debug("Getting classes of model " + mod);
 		JavaClass model = Repository.lookupClass(mod);
-		ArrayList<Class<?>> list = new ArrayList<Class<?>>();
+		ArrayList<Class<T>> list = new ArrayList<Class<T>>();
 		if (mod.isInterface()) {
 			for (JavaClass c : cache) {
 				//System.out.print(".");
@@ -64,7 +88,7 @@ public class ClassRepository {
 				if (flag) {
 					if (c.isAbstract() == false) {
 						logger.debug("Found class " + c.getClassName());						
-						list.add((Class<?>)Class.forName(c.getClassName()));
+						list.add((Class<T>)Class.forName(c.getClassName()));
 					}
 				} else {
 					for (JavaClass superClass : c.getSuperClasses()) {
@@ -77,7 +101,7 @@ public class ClassRepository {
 						}
 						if (flag) {
 							if (c.isAbstract() == false) {
-								list.add((Class<?>)Class.forName(c.getClassName()));
+								list.add((Class<T>)Class.forName(c.getClassName()));
 								break;
 							}
 						}
@@ -90,7 +114,7 @@ public class ClassRepository {
 				try {
 					if (Repository.instanceOf(c, model)) {
 						if (c.isAbstract() == false) {
-							list.add((Class<?>)Class.forName(c.getClassName()));
+							list.add((Class<T>)Class.forName(c.getClassName()));
 						}
 					}
 				}

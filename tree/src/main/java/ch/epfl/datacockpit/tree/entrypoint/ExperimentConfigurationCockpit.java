@@ -8,7 +8,24 @@ import ch.epfl.datacockpit.tree.object_enum.AbstractEnumerator;
 import ch.epfl.datacockpit.tree.object_enum.ExperimentExecutionManager;
 import ch.epfl.datacockpit.tree.gui.SwingObjectConfigurationAndEnumerator;
 
-public class ExperimentConfigurationCockpit extends SwingObjectConfigurationAndEnumerator<Experiment> {
+// TODO : a mettre dans le module experiment directement, et construire le ExperimentExecutionManager
+// en lui fournissant les deux implems : le SmartDataPointCollector (Class"InOut" à recréer) et le Visualiser (ResultDisplayService)
+
+// Créer une autre classe juste à coté avec juste le main suivant
+/*
+public static void main(String[] args) {
+		DefaultResultDisplayingGUI gui = new DefaultResultDisplayingGUI();
+		SmartDataPointCollector sdpc = new SmartDataPointCollector();
+		if (args.length > 0) {
+		sdpc.loadFromFile(new File(args[0]));
+		}
+		gui.displayResults(sdpc);
+		}*/
+
+// ExperimentConfigurationCockpit should no longer extends SwingObjectConfigurationAndEnumerator<Experiment>
+// It should instead serve as an entrypoint configuration class that directly recieves a "Tree" object to use (method show())
+// which is currently the SwingObjectConfigurationAndEnumerator<Experiment> object
+public class ExperimentConfigurationCockpit extends SwingObjectConfigurationAndEnumerator<Experiment>  {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -103,10 +120,5 @@ public class ExperimentConfigurationCockpit extends SwingObjectConfigurationAndE
 			return c;
 		}
 	}
-	
-/*	public static class DefaultFile {
-		public static void main(String[] args) {
-			ExperimentConfigurationCockpit.main(new String[]{"-default", ObjectConstuctionTreeModel.DEFAULT_FILE_NAME});
-		}
-	}*/
+
 }
