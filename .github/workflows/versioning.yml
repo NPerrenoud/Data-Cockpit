@@ -120,10 +120,58 @@ jobs:
       run: |
         mvn -N versions:update-child-modules
 
+    - name: Update Changelog
+      if: env.update_level != 'patch'
+      run: |
+        NEW_VERSION="${{ steps.update_parent_version.outputs.new_version }}"
+
+        # Generate changelog entry
+        DATE=$(date +'%d.%m.%Y')
+        ENTRY="### ${NEW_VERSION}\n"
+        if [ -n "$PATCH_MODULES" ]; then
+          for module in "${PATCH_MODULES[@]}"; do
+            ENTRY+="- ${module} : ...\n"
+          done
+        fi
+        if [ -n "$MINOR_MODULES" ]; then
+          for module in "${MINOR_MODULES[@]}"; do
+            ENTRY+="- ${module} : ...\n"
+          done
+        fi
+        if [ -n "$MAJOR_MODULES" ]; then
+          for module in "${MAJOR_MODULES[@]}"; do
+            ENTRY+="- ${module} : ...\n"
+          done
+        fi
+
+        # Update CHANGELOG.md
+        sed -i "s/## Unreleased/## Unreleased\n\n${ENTRY}/" CHANGELOG.md
+
+
     - name: Commit and Push Changes
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add .
-        git commit -m "Update module versions based on PR #${{ github.event.pull_request.number }}"
+        git commit -m "Update CHANGELOG and module versions based on PR #${{ github.event.pull_request.number }}"
         git push origin main
+
+    - name: Tag and Release
+      if: env.update_level != 'patch'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        NEW_VERSION="${{ steps.update_parent_version.outputs.new_version }}"
+
+        echo "Creating ${{ env.update_level }} release: v${NEW_VERSION}"
+
+        # Create a release using GitHub API
+        TAG_NAME="v${NEW_VERSION}"
+        RELEASE_TITLE="${{ env.update_level^ }} release: ${TAG_NAME}"
+        RELEASE_BODY=$(cat CHANGELOG.md)
+
+        curl -X POST \
+          -H "Authorization: token $GITHUB_TOKEN" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.repository }}/releases \
+          -d "{\"tag_name\":\"$TAG_NAME\",\"name\":\"$RELEASE_TITLE\",\"body\":\"$RELEASE_BODY\"}"
