@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 - tree : cgsdjcs
 - general_libraries : chkjdwc
 
-## v1.0.1
+## v1.0.1 (15.05.2025)
 
 - visualizer : fsdkg
 - database : fhkjge
