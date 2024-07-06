@@ -42,15 +42,10 @@ def main(increment_level):
         print("Parent version not found.")
         return
 
-    print(f"Current parent version: {current_parent_version}")
-
     # Determine new parent version based on the specified level
     new_parent_version = increment_version(current_parent_version, increment_level)
-
     # Update the parent POM version
     update_parent_version(new_parent_version, tree, root)
-    print(f"Parent POM version updated to :\n")
-
     # Print the new version in a structured way for GitHub Actions
     print(new_parent_version)
 
