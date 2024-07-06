@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+##  (2024.07.06)
+<!--- Summarize the changes of each module -->
+<!--- Please, stick to the following example structure :
+- tree : patch update short description
+- database : minor update short description
+-->
+- tree : patch update short description
+- database : minor update short description
+
 
 ### 
 - visualizer : ...
