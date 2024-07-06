@@ -115,6 +115,9 @@ jobs:
     - name: Run Python Script to Update Parent Version
       run: |
         python3 update_parent_version.py ${{ env.update_level }}
+      # Capture the new version output
+      env:
+        GITHUB_OUTPUT: ${{ github.workspace }}/output.txt
 
     - name: Update Child Modules
       run: |
@@ -129,7 +132,7 @@ jobs:
         
     - name: Update Changelog
       run: |
-        NEW_VERSION="${{ steps.update_version.outputs.new_version }}"
+        NEW_VERSION=$(cat ${{ github.workspace }}/output.txt)
         PR_DESCRIPTION=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH" | sed -n '/## Changelog Information/,/##/p' | sed '1d;$d' | sed '/<!---/d')
         DATE=$(date +'%Y.%m.%d')
     
