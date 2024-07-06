@@ -31,8 +31,8 @@ Provide a general summary of your changes in the Title above
 
 ## Changelog Information
 <!--- Summarize the changes of each module -->
-<!--- Please, make sure to delete the entry of the modules that were not updated -->
-- tree : ...
-- database : ...
-- visualizer : ...
-- general_libraries : ...
+<!--- Please, stick to the following example structure :
+- tree : patch update short description
+- database : minor update short description
+-->
+
