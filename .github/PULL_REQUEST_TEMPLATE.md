@@ -30,8 +30,11 @@ Provide a general summary of your changes in the Title above
 <!-- You are allow to check one box per module, but multiple modules can be concerned-->
 
 ## Changelog Information
-<!--- Summarize the changes of each module -->
-<!--- Please, stick to the following example structure :
+<!--- 
+Prepare the changelog entry and potential release description :
+Describe briefly what is the update about.
+Summarize the changes of each module.
+Please, stick to the following example structure :
 - tree : patch update short description
 - database : minor update short description
 -->
