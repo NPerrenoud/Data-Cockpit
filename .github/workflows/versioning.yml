@@ -90,3 +90,35 @@ jobs:
       run: |
         for module in $MAJOR_MODULES; do
           mvn -f $module/pom.xml build-helper:parse-version versions:set -DnewVersion='${parsedVersion.nextMajorVersion}.0.0
+
+
+    - name: Update Parent Properties
+      run: |
+        mvn versions:update-properties
+
+    - name: Determine Overall Update Level
+      id: update_level
+      run: |
+        if [ -n "$MAJOR_MODULES" ]; then
+          echo "update_level=major" >> $GITHUB_ENV
+        elif [ -n "$MINOR_MODULES" ]; then
+          echo "update_level=minor" >> $GITHUB_ENV
+        else
+          echo "update_level=patch" >> $GITHUB_ENV
+        fi
+
+    - name: Run Python Script to Update Parent Version
+      run: |
+        python3 update_parent_version.py ${{ env.update_level }}
+
+    - name: Update Child Modules
+      run: |
+        mvn -N versions:update-child-modules
+
+    - name: Commit and Push Changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add .
+        git commit -m "Update module versions based on PR #${{ github.event.pull_request.number }}"
+        git push origin main
