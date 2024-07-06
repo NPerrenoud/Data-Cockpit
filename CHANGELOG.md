@@ -1,3 +1,0 @@
-# Data-Cockpit changelog
-
-fbwkjfh
