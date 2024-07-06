@@ -49,10 +49,10 @@ def main(increment_level):
 
     # Update the parent POM version
     update_parent_version(new_parent_version, tree, root)
-    print(f"Parent POM version updated to {new_parent_version}")
+    print(f"Parent POM version updated to :\n")
 
     # Print the new version in a structured way for GitHub Actions
-    print(f"::set-output name=new_version::{new_parent_version}")
+    print(new_parent_version)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
