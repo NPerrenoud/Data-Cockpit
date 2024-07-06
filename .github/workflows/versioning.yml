@@ -155,22 +155,29 @@ jobs:
         git commit -m "Update CHANGELOG and module versions based on PR #${{ github.event.pull_request.number }}"
         git push origin main
 
-    - name: Tag and Release
-      if: env.update_level != 'patch'
+    - name: Extract Changelog for Latest Release
+      id: extract_changelog
+      run: |
+        # Get the content of CHANGELOG.md starting from the latest minor or major release
+        CHANGELOG=$(cat CHANGELOG.md | sed -n '/## Unreleased/Q;p')
+        
+        # Extract everything from the next section until the next ## header
+        RELEASE_NOTE=$(echo "$CHANGELOG" | sed -n '/## /,$p')
+    
+        # Set the extracted changelog as an output
+        echo "::set-output name=release_note::$RELEASE_NOTE"
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        NEW_VERSION="${{ steps.update_parent_version.outputs.new_version }}"
-
-        echo "Creating ${{ env.update_level }} release: v${NEW_VERSION}"
-
-        # Create a release using GitHub API
-        TAG_NAME="v${NEW_VERSION}"
-        RELEASE_TITLE="${{ env.update_level }} release: ${TAG_NAME}"
-        RELEASE_BODY=$(cat CHANGELOG.md)
-
-        curl -X POST \
-          -H "Authorization: token $GITHUB_TOKEN" \
-          -H "Accept: application/vnd.github.v3+json" \
-          https://api.github.com/repos/${{ github.repository }}/releases \
-          -d "{\"tag_name\":\"$TAG_NAME\",\"name\":\"$RELEASE_TITLE\",\"body\":\"$RELEASE_BODY\"}"
+      with:
+        tag_name: ${{ env.NEW_VERSION }} # Assuming NEW_VERSION is set earlier
+        release_name: ${{ env.update_level }} Release v${{ env.NEW_VERSION }}
+        body: |
+          ${{ steps.extract_changelog.outputs.release_note }} # Use the extracted changelog here
+        draft: false
+        prerelease: false
+    
+        
