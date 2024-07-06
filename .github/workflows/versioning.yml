@@ -129,18 +129,22 @@ jobs:
 
     - name: Update Changelog
       run: |
-        NEW_VERSION="${{ steps.update_parent_version.outputs.new_version }}"
-        PR_DESCRIPTION="${{ steps.description-checker.outputs.description }}"
+        NEW_VERSION="${{ steps.update_level.outputs.new_version }}"
+        PR_DESCRIPTION=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH" | sed -n '/## Changelog Information/,/##/p' | sed '1d;$d')
         DATE=$(date +'%Y.%m.%d')
-
+    
+        echo "NEW_VERSION=${NEW_VERSION}"
+        echo "PR_DESCRIPTION=${PR_DESCRIPTION}"
+        echo "DATE=${DATE}"
+    
         if [ "${{ env.update_level }}" == 'patch' ]; then
           # Insert entry into CHANGELOG.md under Unreleased section
           sed -i "s/## Unreleased/## Unreleased\n\n### ${NEW_VERSION}\n${PR_DESCRIPTION}\n/" CHANGELOG.md
         else
           NEW_ENTRY="## ${NEW_VERSION} (${DATE})\n${PR_DESCRIPTION}\n"
-
           # Insert new entry into CHANGELOG.md under Unreleased section
           sed -i "s/## Unreleased/## Unreleased\n\n${NEW_ENTRY}/" CHANGELOG.md
+        fi
         
     - name: Commit and Push Changes
       run: |
