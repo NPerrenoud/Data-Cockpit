@@ -4,7 +4,7 @@
 
     <groupId>io.github.nperrenoud</groupId>
     <artifactId>datacockpit</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.1</version>
     <packaging>pom</packaging>
 
     <name>Data-Cockpit</name>
@@ -28,9 +28,9 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <general-libraries.version>1.1.0</general-libraries.version>
-        <database.version>1.2.1</database.version>
-        <tree.version>1.0.3</tree.version>
-        <visualizer.version>1.2.0</visualizer.version>
+        <database.version>1.2.2</database.version>
+        <tree.version>1.0.4</tree.version>
+        <visualizer.version>1.2.1</visualizer.version>
     </properties>
 
     <licenses>
