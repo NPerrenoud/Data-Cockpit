@@ -167,7 +167,7 @@ jobs:
 
         # Create a release using GitHub API
         TAG_NAME="v${NEW_VERSION}"
-        RELEASE_TITLE="${{ env.update_level^ }} release: ${TAG_NAME}"
+        RELEASE_TITLE="${{ env.update_level }} release: ${TAG_NAME}"
         RELEASE_BODY=$(cat CHANGELOG.md)
 
         curl -X POST \
