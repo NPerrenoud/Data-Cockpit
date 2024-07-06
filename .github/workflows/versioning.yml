@@ -126,10 +126,10 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         exempt-labels: no qa
-
+        
     - name: Update Changelog
       run: |
-        NEW_VERSION="${{ steps.update_level.outputs.new_version }}"
+        NEW_VERSION="${{ steps.update_version.outputs.new_version }}"
         PR_DESCRIPTION=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH" | sed -n '/## Changelog Information/,/##/p' | sed '1d;$d')
         DATE=$(date +'%Y.%m.%d')
     
@@ -139,13 +139,13 @@ jobs:
     
         if [ "${{ env.update_level }}" == 'patch' ]; then
           # Insert entry into CHANGELOG.md under Unreleased section
-          sed -i "s/## Unreleased/## Unreleased\n\n### ${NEW_VERSION}\n${PR_DESCRIPTION}\n/" CHANGELOG.md
+          echo -e "### ${NEW_VERSION}\n${PR_DESCRIPTION}" | sed -i '/## Unreleased/r /dev/stdin' CHANGELOG.md
         else
-          NEW_ENTRY="## ${NEW_VERSION} (${DATE})\n${PR_DESCRIPTION}\n"
+          NEW_ENTRY="## ${NEW_VERSION} (${DATE})\n${PR_DESCRIPTION}"
           # Insert new entry into CHANGELOG.md under Unreleased section
-          sed -i "s/## Unreleased/## Unreleased\n\n${NEW_ENTRY}/" CHANGELOG.md
+          echo -e "${NEW_ENTRY}" | sed -i '/## Unreleased/r /dev/stdin' CHANGELOG.md
         fi
-        
+
     - name: Commit and Push Changes
       run: |
         git config --global user.name "github-actions[bot]"
