@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 1.6.0 (2024.07.06)
+Super minor release that definitly upgrade the vizualiser !
+- visualizer : super minor update
+- tree : also super patch update
+
 ### 1.5.2
 <!--- Please, stick to the following example structure :
 - tree : patch update short description
