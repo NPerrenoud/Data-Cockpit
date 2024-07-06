@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 1.5.0 (2024.07.06)
+<!--- Please, stick to the following example structure :
+- tree : patch update short description
+- database : minor update short description
+-->
+- general_libraries : minor update short description
+- database : patch update short description
+
 ## 1.4.0 (2024.07.06)
 - tree : patch update short description
 - database : minor update short description
