@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 1.4.0 (2024.07.06)
+- tree : patch update short description
+- database : minor update short description
+-->
+- tree : patch update short description
+- visualizer : minor update short description
+
 ##  (2024.07.06)
 <!--- Summarize the changes of each module -->
 <!--- Please, stick to the following example structure :
