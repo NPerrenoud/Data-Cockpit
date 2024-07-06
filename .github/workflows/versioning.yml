@@ -131,7 +131,7 @@ jobs:
     - name: Update Changelog
       run: |
         NEW_VERSION="${{ env.NEW_VERSION }}"
-        PR_DESCRIPTION=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH" | sed -n '/## Changelog Information/,/##/p' | sed '1d;$d' | sed '/<!---/d')
+        PR_DESCRIPTION=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH" | awk '/## Changelog Information/,/-->/ {found = 1; next} found')
         DATE=$(date +'%Y.%m.%d')
     
         echo "NEW_VERSION=${NEW_VERSION}"
