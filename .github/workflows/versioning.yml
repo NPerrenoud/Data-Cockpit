@@ -120,28 +120,27 @@ jobs:
       run: |
         mvn -N versions:update-child-modules
         
-    - name: Extract Changelog Information
-      id: extract_changelog
-      uses: shunote/actions-pr-description-checker@v1.0.0
+    - name: Check PR Description
+      id: description-checker
+      uses: jadrol/pr-description-checker-action@v1.0.0
       with:
-        field: "Changelog Information"
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        exempt-labels: no qa
 
     - name: Update Changelog
       run: |
         NEW_VERSION="${{ steps.update_parent_version.outputs.new_version }}"
-        PR_BODY=$(jq -r .pull_request.body < "$GITHUB_EVENT_PATH")
-        CHANGELOG_INFO="${{ steps.extract_changelog.outputs.result }}"
+        PR_DESCRIPTION="${{ steps.description-checker.outputs.description }}"
+        DATE=$(date +'%Y.%m.%d')
 
         if [ "${{ env.update_level }}" == 'patch' ]; then
           # Insert entry into CHANGELOG.md under Unreleased section
-          sed -i "s/## Unreleased/## Unreleased\n\n### ${NEW_VERSION}\n${CHANGELOG_INFO}\n/" CHANGELOG.md
+          sed -i "s/## Unreleased/## Unreleased\n\n### ${NEW_VERSION}\n${PR_DESCRIPTION}\n/" CHANGELOG.md
         else
-          DATE=$(date +'%Y.%m.%d')
-          NEW_ENTRY="## ${NEW_VERSION} (${DATE})\n${CHANGELOG_INFO}\n"
+          NEW_ENTRY="## ${NEW_VERSION} (${DATE})\n${PR_DESCRIPTION}\n"
 
           # Insert new entry into CHANGELOG.md under Unreleased section
           sed -i "s/## Unreleased/## Unreleased\n\n${NEW_ENTRY}/" CHANGELOG.md
-        fi
         
     - name: Commit and Push Changes
       run: |
