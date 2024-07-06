@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 1.7.0 (2024.07.06)
+Super release description yeeeah
+- visualizer : patch update short description
+- database : minor update short description
+
 ## 1.6.0 (2024.07.06)
 Super minor release that definitly upgrade the vizualiser !
 - visualizer : super minor update
