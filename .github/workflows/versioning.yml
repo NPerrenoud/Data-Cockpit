@@ -158,20 +158,28 @@ jobs:
     - name: Extract Changelog for Latest Release
       id: extract_changelog
       run: |
-        # Get the content of CHANGELOG.md starting from the latest minor or major release
-        CHANGELOG=$(sed -n '/## Unreleased/Q;p' CHANGELOG.md)
+        # Get the content of CHANGELOG.md
+        CHANGELOG=$(cat CHANGELOG.md)
           
-        # Extract everything from the next section until the next ## header
-         RELEASE_NOTE=$(echo "$CHANGELOG" | sed -n '/^## /,$!d;//!{s/^/  /};1d')
+        # Debug: Print the content of CHANGELOG
+        echo "Content of CHANGELOG:"
+        echo "$CHANGELOG"
+          
+         # Extract the section after "## Unreleased" and before the next "## " header
+        RELEASE_NOTE=$(echo "$CHANGELOG" | sed -n '/## Unreleased/{n;:a;n;/^## /q;p;ba}')
+          
+         # Debug: Print the content of RELEASE_NOTE
+        echo "Content of RELEASE_NOTE:"
+        echo "$RELEASE_NOTE"
           
         # Export the extracted changelog as an environment variable
         echo "RELEASE_NOTE<<EOF" >> $GITHUB_ENV
         echo "$RELEASE_NOTE" >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
 
-         # Debugging to see if RELEASE_NOTE is set correctly
+        # Debugging to see if RELEASE_NOTE is set correctly
         echo "RELEASE_NOTE is: $RELEASE_NOTE"
-
+        
     - name: Debug RELEASE_NOTE
       run: |
         echo "Extracted RELEASE_NOTE: ${{ env.RELEASE_NOTE }}"
