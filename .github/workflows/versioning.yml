@@ -166,20 +166,19 @@ jobs:
         RELEASE_NOTE=$(echo "$CHANGELOG" | sed -n '/## /,$p')
     
         # Export the extracted changelog as an environment variable
-        echo "RELEASE_NOTE<<EOF" >> $GITHUB_ENV
         echo "$RELEASE_NOTE" >> $GITHUB_ENV
-        echo "EOF" >> $GITHUB_ENV
+        echo REALEASE_NOTE=${{ env.RELEASE_NOTE }}
 
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        RELEASE_NOTE: ${{ env.RELEASE_NOTE }}
       with:
         tag_name: ${{ env.NEW_VERSION }} # Assuming NEW_VERSION is set earlier
         release_name: ${{ env.update_level }} Release v${{ env.NEW_VERSION }}
-        body: ${{ env.RELEASE_NOTE }}
+        body: |
+           ${{ env.RELEASE_NOTE }}
         draft: false
         prerelease: false
     
