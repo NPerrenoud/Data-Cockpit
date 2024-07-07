@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 2.3.0 (2024.07.07)
+jhgfhzjghdhlu
+- tree: patch update short description
+- database: minor update short description
+
 ## 2.2.0 (2024.07.07)
 SuperSuperSuperSuperSuperSuper
 - tree: patch update short description
