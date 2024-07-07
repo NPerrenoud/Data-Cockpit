@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 2.0.0 (2024.07.07)
+Trying out super massive major update in Visualizer woooooh
+- tree : patch simple patchy patch
+- database : Minor update to ensure backward compatibility
+- general_libraries : Minor update to ensure backward compatibility
+- Visualizer : Becomes a big boy with a brand new major version
+
 ### 1.13.2
 Every component is patched kek
 - tree : patch update short description
