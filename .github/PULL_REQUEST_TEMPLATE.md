@@ -36,9 +36,10 @@ Provide a general summary of your changes in the Title above
 Prepare the changelog entry and potential release description :
 Describe briefly what is the update about.
 Summarize the changes of each module.
-Please, stick to the following example structure :
-"Brief and clear general descriptionn"
-- tree : patch update short description
-- database : minor update short description
+Please, stick to the following example structure, the modules must be referenced with the same syntax as the Checklist section does:
+"Brief and clear general description"
+- tree: patch update short description
+- database: minor update short description
+- general_libraries: patch description
 -->
 
