@@ -95,7 +95,7 @@ jobs:
       run: |
         for module in $MAJOR_MODULES; do
           mvn -f $module/pom.xml build-helper:parse-version versions:set -DnewVersion='${parsedVersion.nextMajorVersion}.0.0'
-
+        done
 
     - name: Update Parent Properties
       run: |
