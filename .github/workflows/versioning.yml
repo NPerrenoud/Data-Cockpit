@@ -158,17 +158,19 @@ jobs:
     - name: Extract Changelog for Latest Release
       id: extract_changelog
       run: |
-        cat CHANGELOG.md
         # Get the content of CHANGELOG.md starting from the latest minor or major release
         CHANGELOG=$(sed -n '/## Unreleased/Q;p' CHANGELOG.md)
-        
+          
         # Extract everything from the next section until the next ## header
         RELEASE_NOTE=$(echo "$CHANGELOG" | sed -n '/## /,$p')
-    
+          
         # Export the extracted changelog as an environment variable
+        echo "RELEASE_NOTE<<EOF" >> $GITHUB_ENV
         echo "$RELEASE_NOTE" >> $GITHUB_ENV
-        echo REALEASE_NOTE=${{ env.RELEASE_NOTE }}
+        echo "EOF" >> $GITHUB_ENV
 
+        # Debugging to see if RELEASE_NOTE is set correctly
+        echo "RELEASE_NOTE is: $RELEASE_NOTE"
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
