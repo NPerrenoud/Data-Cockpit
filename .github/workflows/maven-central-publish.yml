@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    if: env.update_level != 'patch'
+    if: ${{ github.event.workflow_run.conclusion == 'success' && (github.event.workflow_run.name == 'Versioning Workflow' || env.UPDATE_LEVEL != 'patch') }}
     runs-on: ubuntu-latest
 
     steps:
