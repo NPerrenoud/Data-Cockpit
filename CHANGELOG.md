@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 1.12.0 (2024.07.07)
+- tree : patch update short description
+- database : minor update short description
 ## 1.11.0 (2024.07.07)
 decsesgk
 - tree : patch update short description
