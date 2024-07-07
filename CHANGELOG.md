@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 1.10.0 (2024.07.07)
+Release that does stuff
+- tree : patch update short description
+- database : minor update short description
+
 ## 1.9.0 (2024.07.07)
 cozcou
 - tree : patch update short description
