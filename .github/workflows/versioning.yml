@@ -158,8 +158,9 @@ jobs:
     - name: Extract Changelog for Latest Release
       id: extract_changelog
       run: |
+        cat CHANGELOG.md
         # Get the content of CHANGELOG.md starting from the latest minor or major release
-        CHANGELOG=$(cat CHANGELOG.md | sed -n '/## Unreleased/Q;p')
+        CHANGELOG=$(sed -n '/## Unreleased/Q;p' CHANGELOG.md)
         
         # Extract everything from the next section until the next ## header
         RELEASE_NOTE=$(echo "$CHANGELOG" | sed -n '/## /,$p')
