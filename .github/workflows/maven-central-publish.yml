@@ -35,20 +35,24 @@ jobs:
         DESCRIPTION=$(echo "$RELEASE_NOTES" | jq -r '.body')
     
         # Define module names to search for (case insensitive)
-        MODULE_NAMES=("tree" "database" "visualizer" "general_libraries")
+        MODULE_NAMES=("tree:" "database:" "visualizer:" "general_libraries:")
     
-        # Extract and deduplicate modules
+        # Initialize MODULES variable
         MODULES=""
+    
+        # Loop through each module name
         for module in "${MODULE_NAMES[@]}"; do
-          modules_found=$(echo "$DESCRIPTION" | awk -v module="$module" 'tolower($0) ~ tolower(module) { print tolower(module) }' | tr '\n' ',' | sed 's/,$//')
+          # Search for module names followed by ":"
+          modules_found=$(echo "$DESCRIPTION" | grep -i "$module" | sed 's/:.*//' | tr '\n' ',' | sed 's/,$//')
           if [ -n "$modules_found" ]; then
             MODULES="$MODULES,$modules_found"
           fi
         done
-    
+
         # Remove leading comma and sort modules alphabetically
         MODULES=$(echo "$MODULES" | sed 's/^,//' | tr ',' '\n' | sort -u | tr '\n' ',' | sed 's/,$//')
     
+        # Print and set outputs
         echo "modules=$MODULES" >> $GITHUB_ENV
         echo "::set-output name=modules::$MODULES"
 
