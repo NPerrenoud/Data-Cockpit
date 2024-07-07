@@ -46,10 +46,10 @@ jobs:
           # Search for module names followed by ":"
           modules_found=$(echo "$DESCRIPTION" | grep -i "$module" | sed 's/:.*//' | tr '\n' ',' | sed 's/,$//')
           if [ -n "$modules_found" ]; then
-            MODULES="$MODULES,$modules_found"
+            MODULES="$MODULES,$modules_found"  # Append modules to MODULES variable
           fi
         done
-
+    
         # Remove leading comma and sort modules alphabetically
         MODULES=$(echo "$MODULES" | sed 's/^,//' | tr ',' '\n' | sort -u | tr '\n' ',' | sed 's/,$//')
     
@@ -71,8 +71,8 @@ jobs:
                     </server>
                 </servers>
             </settings>" > config.xml
-    - name: Conditionally Deploy Parent POM if specified
-      if: steps.extract_data.outputs.parent == 'true'
+            
+    - name: Deploy Parent POM
       run: mvn -B clean deploy -N -DskipTests -s config.xml -Dgpg.executable=gpg -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}" -Dgpg.use-agent=false -Dgpg.loopback=true
       env:
         MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
