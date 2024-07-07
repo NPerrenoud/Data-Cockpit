@@ -72,7 +72,7 @@ jobs:
         done
     
         # Remove leading comma and sort modules alphabetically
-        MODULES=$(echo "$MODULES" | sed 's/^,//' | tr ',' '\n' | sort -u | tr '\n' ',' | sed 's/,$//')
+        MODULES=$(echo "$MODULES" | sed 's/^,//' | tr ',' '\n' | sort -u | tr '\n' ',' | sed 's/,$//' | sed 's/^- //')
     
         # Print and set outputs
         echo "modules=$MODULES" >> $GITHUB_ENV
