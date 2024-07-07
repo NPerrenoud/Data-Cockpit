@@ -156,6 +156,7 @@ jobs:
         git push origin main
 
     - name: Extract Changelog for Latest Release
+      if: env.update_level != 'patch'
       id: extract_changelog
       run: |
         # Get the content of CHANGELOG.md
@@ -170,6 +171,7 @@ jobs:
         echo "EOF" >> $GITHUB_ENV
                
     - name: Create Release
+      if: env.update_level != 'patch'
       id: create_release
       uses: actions/create-release@v1
       env:
