@@ -162,15 +162,20 @@ jobs:
         CHANGELOG=$(sed -n '/## Unreleased/Q;p' CHANGELOG.md)
           
         # Extract everything from the next section until the next ## header
-        RELEASE_NOTE=$(echo "$CHANGELOG" | sed -n '/## /,$p')
+         RELEASE_NOTE=$(echo "$CHANGELOG" | sed -n '/^## /,$!d;//!{s/^/  /};1d')
           
         # Export the extracted changelog as an environment variable
         echo "RELEASE_NOTE<<EOF" >> $GITHUB_ENV
         echo "$RELEASE_NOTE" >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
 
-        # Debugging to see if RELEASE_NOTE is set correctly
+         # Debugging to see if RELEASE_NOTE is set correctly
         echo "RELEASE_NOTE is: $RELEASE_NOTE"
+
+    - name: Debug RELEASE_NOTE
+      run: |
+        echo "Extracted RELEASE_NOTE: ${{ env.RELEASE_NOTE }}"
+        
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
