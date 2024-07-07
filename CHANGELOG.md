@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 2.7.0 (2024.07.07)
+suuuuuguz
+- tree: patch update short description
+- database: minor update short description
+
 ## 2.6.0 (2024.07.07)
 release : 
 - general_libraries: MINOR description
