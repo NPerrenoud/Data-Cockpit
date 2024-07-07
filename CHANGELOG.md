@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+### 2.5.2
+First patch test update 
+- tree: patch update short description
+- database: patch update short description
+- visualizer: patch description
+
 ### 2.5.1
 Desription updaed 
 - visualizer: minor update short description
