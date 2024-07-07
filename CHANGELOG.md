@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 2.9.0 (2024.07.07)
+minor test : 
+- database: minor update short description
+- general_libraries: patch description
+
 ### 2.8.1
 test : 
 - tree: patch update short description
