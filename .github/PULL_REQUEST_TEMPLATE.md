@@ -2,8 +2,10 @@
 Provide a general summary of your changes in the Title above
 -->
 
+<!--- Do not delete the comments of this template please. The workflow will need your PR description to stick to this structure -->
+
 ## Description
-<!--- Describe your changes in detail -->
+<!--- Describe your changes in detail here. This will help for the review of the PR -->
 
 ## Checklist
 <!--- Check the boxes below to indicate what modules have been updated with relative modification importance-->
@@ -35,6 +37,7 @@ Prepare the changelog entry and potential release description :
 Describe briefly what is the update about.
 Summarize the changes of each module.
 Please, stick to the following example structure :
+"Brief and clear general descriptionn"
 - tree : patch update short description
 - database : minor update short description
 -->
