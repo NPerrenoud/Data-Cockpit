@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 2.1.0 (2024.07.07)
+- tree: minor update short description
+- database: patch update short description
+- visualizer: minor update short description
+
 ## 2.0.0 (2024.07.07)
 Trying out super massive major update in Visualizer woooooh
 - tree : patch simple patchy patch
