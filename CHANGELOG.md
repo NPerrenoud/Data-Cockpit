@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+### 1.13.2
+Every component is patched kek
+- tree : patch update short description
+- database : patch update short description
+- visualizer : patch update short description
+-  general_libraries : patch update short description
+
 ### 1.13.1
 This is a simple patch to improve small syntax stuff in Tree and visualizer
 - tree : patch update for syntax purpose
