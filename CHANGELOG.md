@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+### 2.5.3
+Second patch update 
+- general_libraries: patch description
+- visualizer: patch description
+
 ### 2.5.2
 First patch test update 
 - tree: patch update short description
