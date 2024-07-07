@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 2.6.0 (2024.07.07)
+release : 
+- general_libraries: MINOR description
+
 ### 2.5.6
 5th test
 - tree: patch update short description
