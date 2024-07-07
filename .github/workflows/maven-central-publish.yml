@@ -44,7 +44,7 @@ jobs:
         # Loop through each module name
         for module in "${MODULE_NAMES[@]}"; do
           # Search for module names followed by ":"
-          modules_found=$(echo "$DESCRIPTION" | grep -i "$module" | sed 's/:.*//' | tr '\n' ',' | sed 's/,$//')
+          modules_found=$(echo "$DESCRIPTION" | grep -i "$module" | sed 's/:.*//' | tr '\n' ',' | sed 's/,$//' | sed 's/^- //')
           if [ -n "$modules_found" ]; then
             MODULES="$MODULES,$modules_found"  # Append modules to MODULES variable
           fi
