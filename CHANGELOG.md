@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 2.5.0 (2024.07.07)
+description oui oui : 
+- tree: patch update short description
+- database: minor update short description
+
 ## 2.4.0 (2024.07.07)
 Description coucou
 - visualizer: patch update short description
