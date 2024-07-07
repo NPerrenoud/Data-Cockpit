@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 1.8.0 (2024.07.07)
+- tree : patch update short description
+- database : minor update short description
+
 ## 1.7.0 (2024.07.06)
 Super release description yeeeah
 - visualizer : patch update short description
