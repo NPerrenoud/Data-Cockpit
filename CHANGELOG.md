@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+### 1.13.1
+This is a simple patch to improve small syntax stuff in Tree and visualizer
+- tree : patch update for syntax purpose
+- visualizer : patch update for syntax purpose
+
 ## 1.13.0 (2024.07.07)
 Super describtoin 
 
