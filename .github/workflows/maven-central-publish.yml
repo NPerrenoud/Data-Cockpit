@@ -2,8 +2,14 @@ name: Maven Central Publish
 
 on:
   release:
-    types: [all]
-
+    types:
+    - published
+    - unpublished
+    - created
+    - edited
+    - deleted
+    - prereleased
+    - released
 
 jobs:
   deploy:
