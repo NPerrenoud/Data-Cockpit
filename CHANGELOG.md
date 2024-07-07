@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+### 2.5.1
+Desription updaed 
+- visualizer: minor update short description
+- general_libraries: patch description
+
 ## 2.5.0 (2024.07.07)
 description oui oui : 
 - tree: patch update short description
