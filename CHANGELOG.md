@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 3.0.0 (2024.09.01)
+Example of a major release 
+- tree: will update its version 
+
 ## 2.9.0 (2024.07.07)
 minor test : 
 - database: minor update short description
