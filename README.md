@@ -24,7 +24,7 @@ Installation instructions
 
 ## Usage
 
-Simple usage example
+Simple usage example...
 
 ## Issue
 
