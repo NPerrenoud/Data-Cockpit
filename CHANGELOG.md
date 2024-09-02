@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 3.2.0 (2024.09.02)
+This is a new minor release to demonstrate how publications work
+- tree: minor update
+- database: minor update
+- visualizer: minor update
+- general_libraries: minor update
 ## 3.1.0 (2024.09.01)
 test
 - tree: minor update
