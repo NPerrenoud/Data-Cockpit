@@ -1,4 +1,4 @@
-.....
+
 # Data-Cockpit
 
 Welcome to the project! This document will guide you through various sections.
